@@ -1,26 +1,21 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
 
-function App() {
+import { Navbar } from './components/navigation/navbar.jsx'
+import CatDisplay from './components/cat-booth/cat-booth'
+import CatGallery from './components/cat-gallery/cat-gallery'
+
+const App = () => {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+
+      <Navbar />
+
+      <CatDisplay />
+
+      <CatGallery />
+
     </div>
   );
-}
+};
 
 export default App;
