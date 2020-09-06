@@ -2,42 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 import './cat-gallery.css'
 
-const CatGallery = () => {
-
-    const [lovedCats, setLovedCats] = useState([])
-
-    useEffect(() => {
-
-        const getLovedCats = async () => {
-
-            try {
-
-                let responseGettingLovedCats = await fetch(
-                    "https://afternoon-oasis-64306.herokuapp.com/cats/lovedcats",
-                    {
-                        method: "GET",
-                        headers: {
-                            "Content-Type": "application/json"
-                        }
-                    })
-
-                responseGettingLovedCats = await responseGettingLovedCats.json()
-
-                console.log(responseGettingLovedCats)
-
-                setLovedCats(responseGettingLovedCats.lovedCats)
-
-            } catch (error) {
-                console.log(error)
-            }
-
-        }
-
-        getLovedCats()
-
-    }, [])
-
-
+const CatGallery = ({ lovedCats }) => {
 
     return (
 

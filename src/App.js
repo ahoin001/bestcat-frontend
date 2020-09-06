@@ -1,74 +1,67 @@
 import React, { useEffect, useState } from 'react';
 
 import { Navbar } from './components/navigation/navbar.jsx'
-import CatDisplay from './components/cat-booth/cat-booth'
+import CatBooth from './components/cat-booth/cat-booth'
 import CatGallery from './components/cat-gallery/cat-gallery'
 
 const App = () => {
+
 
   const [listOfCats, setlistOfCats] = useState('')
   const [currentCat, setCurrentCat] = useState({})
   const [lovedCats, setLovedCats] = useState([]);
 
+  // initally true because we need data first
+  const [refetch, setRefetch] = useState(true);
+
   // ? Gets List of Cats From DB and also sets a random cat
   useEffect(() => {
 
-    const getAllCatsFromApi = async () => {
+    if (refetch) {
 
-      try {
+      const getAllCatsFromApi = async () => {
 
-        const response = await fetch(
-          "https://afternoon-oasis-64306.herokuapp.com/cats",
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json"
-            }
-          })
+        try {
 
-        const apiResponseObjectWithArrayOfCats = await response.json()
+          const response = await fetch(
+            "https://afternoon-oasis-64306.herokuapp.com/cats",
+            {
+              method: "GET",
+              headers: {
+                "Content-Type": "application/json"
+              }
+            })
 
-        console.log('Response from cat list API Route: ', apiResponseObjectWithArrayOfCats.cats)
+          const apiResponseObjectWithArrayOfCats = await response.json()
 
-        const catList = apiResponseObjectWithArrayOfCats.cats;
+          console.log('Response from cat list API Route: ', apiResponseObjectWithArrayOfCats.cats)
 
-        let randomCatIndex = Math.floor(Math.random() * (catList.length - 1) + 1);
+          const catList = apiResponseObjectWithArrayOfCats.cats;
 
-        const randomCat = catList[randomCatIndex]
+          let randomCatIndex = Math.floor(Math.random() * (catList.length - 1) + 1);
 
-        let lovedCats = catList.filter(cat => cat.loved === true)
+          const randomCat = catList[randomCatIndex]
 
-        setCurrentCat(randomCat)
-        setlistOfCats(catList)
-        setLovedCats(lovedCats)
+          const filterLovedCats = catList.filter(cat => cat.loved === true)
+          console.log('Loved Cats: ', filterLovedCats)
 
-      } catch (error) {
-        console.log(error)
+          setCurrentCat(randomCat)
+          setlistOfCats(catList)
+          setLovedCats(filterLovedCats)
+
+        } catch (error) {
+          console.log(error)
+        }
+
+        setRefetch(false);
+
       }
 
-    }
-
-    getAllCatsFromApi()
-
-  }, [])
-
-  const setRandomCat = () => {
-
-    console.log(currentCat)
-
-    let randomCatIndex = Math.floor(Math.random() * (listOfCats.length - 1) + 1);
-
-    // ? Prevent back to back random cat
-    while (currentCat.catId === listOfCats[randomCatIndex].catId) {
-
-      console.log(`WHOA! Same cat ID, we'll roll again!`)
-      randomCatIndex = Math.floor(Math.random() * (listOfCats.length - 1) + 1);
+      getAllCatsFromApi()
 
     }
 
-    setCurrentCat(listOfCats[randomCatIndex])
-
-  }
+  }, [refetch])
 
   const loveCat = async () => {
 
@@ -103,7 +96,7 @@ const App = () => {
     }
 
     // Set next Cat for voting
-    setRandomCat()
+    setRefetch(true)
 
   }
 
@@ -138,7 +131,26 @@ const App = () => {
       console.log(error)
     }
 
-    setRandomCat()
+    setRefetch(true)
+
+  }
+
+  const setRandomCat = () => {
+
+    console.log(currentCat)
+
+    let randomCatIndex = Math.floor(Math.random() * (listOfCats.length - 1) + 1);
+
+    // ? Prevent back to back random cat
+    while (currentCat.catId === listOfCats[randomCatIndex].catId) {
+
+      console.log(`WHOA! Same cat ID, we'll roll again!`)
+      randomCatIndex = Math.floor(Math.random() * (listOfCats.length - 1) + 1);
+
+    }
+
+    // Should be triggering rerender making useEffect trigger right?
+    setCurrentCat(listOfCats[randomCatIndex])
 
   }
 
@@ -147,7 +159,7 @@ const App = () => {
 
       <Navbar />
 
-      <CatDisplay
+      <CatBooth
         listOfCats={listOfCats}
         currentCat={currentCat}
         setCurrentCat={setCurrentCat}
