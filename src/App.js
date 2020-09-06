@@ -6,48 +6,141 @@ import CatGallery from './components/cat-gallery/cat-gallery'
 
 const App = () => {
 
-  // const [listOfCats, setlistOfCats] = useState('')
-  // const [currentCat, setCurrentCat] = useState({})
+  const [listOfCats, setlistOfCats] = useState('')
+  const [currentCat, setCurrentCat] = useState({})
+  const [lovedCats, setLovedCats] = useState([]);
 
-  // // ? Gets List of Cats From DB and also sets a random cat
-  // useEffect(() => {
+  // ? Gets List of Cats From DB and also sets a random cat
+  useEffect(() => {
 
-  //   const getAllCatsFromApi = async () => {
+    const getAllCatsFromApi = async () => {
 
-  //     try {
+      try {
 
-  //       const response = await fetch(
-  //         "https://afternoon-oasis-64306.herokuapp.com/cats",
-  //         {
-  //           method: "GET",
-  //           headers: {
-  //             "Content-Type": "application/json"
-  //           }
-  //         })
+        const response = await fetch(
+          "https://afternoon-oasis-64306.herokuapp.com/cats",
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json"
+            }
+          })
 
-  //       const apiResponseObjectWithArrayOfCats = await response.json()
+        const apiResponseObjectWithArrayOfCats = await response.json()
 
-  //       console.log('Response from API: ', apiResponseObjectWithArrayOfCats.cats)
+        console.log('Response from cat list API Route: ', apiResponseObjectWithArrayOfCats.cats)
 
-  //       let catList = apiResponseObjectWithArrayOfCats.cats;
+        const catList = apiResponseObjectWithArrayOfCats.cats;
 
-  //       let randomCatIndex = Math.floor(Math.random() * (catList.length - 1) + 1);
+        let randomCatIndex = Math.floor(Math.random() * (catList.length - 1) + 1);
 
-  //       const randomCat = catList[randomCatIndex]
+        const randomCat = catList[randomCatIndex]
 
-  //       setCurrentCat(randomCat)
-  //       setlistOfCats(catList)
+        let lovedCats = catList.filter(cat => cat.loved === true)
 
-  //     } catch (error) {
-  //       console.log(error)
-  //     }
+        setCurrentCat(randomCat)
+        setlistOfCats(catList)
+        setLovedCats(lovedCats)
 
-  //   }
+      } catch (error) {
+        console.log(error)
+      }
 
-  //   getAllCatsFromApi()
+    }
 
-  // }, [])
+    getAllCatsFromApi()
 
+  }, [])
+
+  const setRandomCat = () => {
+
+    console.log(currentCat)
+
+    let randomCatIndex = Math.floor(Math.random() * (listOfCats.length - 1) + 1);
+
+    // ? Prevent back to back random cat
+    while (currentCat.catId === listOfCats[randomCatIndex].catId) {
+
+      console.log(`WHOA! Same cat ID, we'll roll again!`)
+      randomCatIndex = Math.floor(Math.random() * (listOfCats.length - 1) + 1);
+
+    }
+
+    setCurrentCat(listOfCats[randomCatIndex])
+
+  }
+
+  const loveCat = async () => {
+
+    // ? Convert a request object to JSON for transfer to api
+    let requestBodyLovedCat = JSON.stringify({
+      idOfCatToLove: currentCat.catId,
+      loved: true
+    })
+
+    console.log('(FE) Your cat vote: ', requestBodyLovedCat)
+
+    try {
+
+      let responseAfterUpdatingCat = await fetch(
+
+
+        "https://afternoon-oasis-64306.herokuapp.com/cats",
+        {
+          method: "PATCH",
+          body: requestBodyLovedCat,
+          headers: {
+            "Content-Type": "application/json"
+          }
+
+        })
+
+      responseAfterUpdatingCat = await responseAfterUpdatingCat.json()
+      console.log(responseAfterUpdatingCat)
+
+    } catch (error) {
+      console.log(error)
+    }
+
+    // Set next Cat for voting
+    setRandomCat()
+
+  }
+
+  const dislikeCat = async () => {
+
+    // ? Convert Request to JSON for transfer to api
+    let requestBodyDislikedCat = JSON.stringify({
+      idOfCatToLove: currentCat.catId,
+      loved: false
+    })
+
+    // console.log('(FE) Your cat vote: ', requestBodyDislikedCat)
+
+    try {
+
+      let responseAfterUpdatingCat = await fetch(
+
+        "https://afternoon-oasis-64306.herokuapp.com/cats",
+        {
+          method: "PATCH",
+          body: requestBodyDislikedCat,
+          headers: {
+            "Content-Type": "application/json"
+          }
+
+        })
+
+      responseAfterUpdatingCat = await responseAfterUpdatingCat.json()
+      console.log(responseAfterUpdatingCat)
+
+    } catch (error) {
+      console.log(error)
+    }
+
+    setRandomCat()
+
+  }
 
   return (
     <div className="App">
@@ -55,12 +148,19 @@ const App = () => {
       <Navbar />
 
       <CatDisplay
-        // catList={listOfCats}
-        // currentCat={currentCat}
+        listOfCats={listOfCats}
+        currentCat={currentCat}
+        setCurrentCat={setCurrentCat}
+        loveCat={loveCat}
+        dislikeCat={dislikeCat}
+        setRandomCat={setRandomCat}
 
       />
 
-      <CatGallery />
+      <CatGallery
+        lovedCats={lovedCats}
+
+      />
 
     </div>
   );
