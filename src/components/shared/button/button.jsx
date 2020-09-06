@@ -8,6 +8,7 @@ const Button = (props) => {
 
         <button
             className={`bttn ${props.next ? 'next' : ''}  ${props.dislike ? 'dislike' : ''} `}
+            onClick={props.onClick}
 
         >
 

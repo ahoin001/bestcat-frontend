@@ -9,7 +9,6 @@ const CatDisplay = (props) => {
     const [listOfCats, setlistOfCats] = useState('')
     const [currentCat, setCurrentCat] = useState({})
 
-
     // ? Gets List of Cats From DB and also sets a random cat
     useEffect(() => {
 
@@ -47,32 +46,84 @@ const CatDisplay = (props) => {
 
         getAllCatsFromApi()
 
-
     }, [])
 
     const setRandomCat = () => {
 
         let randomCatIndex = Math.floor(Math.random() * (listOfCats.length - 1) + 1);
+        
+        console.log('INDEX OF NEXT RANDOM CAT: ', randomCatIndex)
 
-        // while (catImageID === listOfCats[randomCatIndex].catId) {
+        while (currentCat.catId === listOfCats[randomCatIndex].catId) {
 
-        //     console.log(`WHOA! Same cat , we'll roll again!`)
-        //     randomCatIndex = Math.floor(Math.random() * (listOfCats.length - 1) + 1);
+            console.log(`WHOA! Same cat ID, we'll roll again!`)
+            randomCatIndex = Math.floor(Math.random() * (listOfCats.length - 1) + 1);
 
-        // }
+        }
 
-        // console.log('INDEX OF RANDOM: ', randomCatIndex)
+        console.log(listOfCats[randomCatIndex])
+        setCurrentCat(listOfCats[randomCatIndex])
 
-        // const { catId, catImageUrl, loved } = listOfCats[randomCatIndex]
-
-        // randomCatPic.setAttribute("src", catImageUrl)
-
-        // // ? Set global cat imageID from the new random cat for votes
+        // ? Set global cat imageID from the new random cat for votes
         // catImageID = catId;
 
     }
 
-    console.log(`CatBooth Rendered`)
+    const loveCat = async () => {
+        
+        // ? Convert a request object to JSON for transfer to api
+        let requestBodyLovedCat = JSON.stringify({
+            idOfCatToLove: currentCat.catId,
+            loved: true
+        })
+    
+        console.log('(FE) Your cat vote: ', requestBodyLovedCat)
+    
+        try {
+    
+            let responseAfterUpdatingCat = await fetch(
+                "https://afternoon-oasis-64306.herokuapp.com/cats",
+                {
+                    method: "PATCH",
+                    body: requestBodyLovedCat,
+                    headers: {
+                        "Content-Type": "application/json"
+                    }
+
+                })
+
+                responseAfterUpdatingCat = await responseAfterUpdatingCat.json()
+                console.log(responseAfterUpdatingCat)
+    
+        } catch (error) {
+            console.log(error)
+        }
+    
+
+    }
+
+    // const getLovedCats = async () => {
+        
+    //     try {
+    
+    //         const responseGettingLovedCats = await fetch(
+    //             "https://afternoon-oasis-64306.herokuapp.com/cats/lovedcats",
+    //             {
+    //                 method: "GET",
+    //                 headers: {
+    //                     "Content-Type": "application/json"
+    //                 }
+    //             })
+
+    //         console.log(responseGettingLovedCats)
+    
+    //     } catch (error) {
+    //         console.log(error)
+    //     }
+
+    // }
+    
+    console.log(currentCat)
 
     return (
 
@@ -80,19 +131,28 @@ const CatDisplay = (props) => {
 
             <div className="buttons-container">
 
-                {/* <!-- Need to Connect to database/backend to use these --> */}
+                <Button
+                    next
+                    text='Get Another Cat'
+                    onClick={setRandomCat}
+                    
 
-                <Button next text='Get Another Cat' />
+                />
 
-                <Button text="Love Cat" />
+                <Button 
+                text="Love Cat" 
+                onClick={loveCat}/>
 
-                <Button dislike text='Un-Love Cat' />
+                <Button
+                    dislike
+                    text='Un-Love Cat'
+                />
 
             </div>
 
             <div className="pic-container">
 
-                <img alt="random cat" src='' />
+                <img alt="random cat" src={currentCat ? currentCat.catImageUrl : ''} />
 
             </div>
 
