@@ -5,6 +5,7 @@ import './cat-gallery.css'
 const CatGallery = () => {
 
     return (
+
         <div className="loved-container">
 
             <div>
@@ -15,13 +16,14 @@ const CatGallery = () => {
 
             <ul className="loved-cat-list">
 
-                <img src="https://cdn2.thecatapi.com/images/94n.jpg" class="fav-cat" alt="Loved-Cat-Pic" />
-                <img src="https://cdn2.thecatapi.com/images/bat.jpg" class="fav-cat" alt="Loved-Cat-Pic" />
+                <img src="https://cdn2.thecatapi.com/images/94n.jpg" className="fav-cat" alt="Loved-Cat-Pic" />
+                <img src="https://cdn2.thecatapi.com/images/bat.jpg" className="fav-cat" alt="Loved-Cat-Pic" />
 
             </ul>
 
 
         </div>
+
     );
 
 };
