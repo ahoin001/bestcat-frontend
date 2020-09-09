@@ -7,7 +7,7 @@ const Button = (props) => {
     return (
 
         <button
-            className={`bttn ${props.next ? 'next' : ''}  ${props.dislike ? 'dislike' : ''} `}
+            className={`bttn ${props.next ? 'next' : ''}  ${props.dislike ? 'dislike' : ''} ${props.classes}`}
             onClick={props.onClick}
 
         >

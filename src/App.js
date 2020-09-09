@@ -6,7 +6,6 @@ import CatGallery from './components/cat-gallery/cat-gallery'
 
 const App = () => {
 
-
   const [listOfCats, setlistOfCats] = useState('')
   const [currentCat, setCurrentCat] = useState({})
   const [lovedCats, setLovedCats] = useState([]);
@@ -48,6 +47,7 @@ const App = () => {
           setCurrentCat(randomCat)
           setlistOfCats(catList)
           setLovedCats(filterLovedCats)
+          // setRandomCat()
 
         } catch (error) {
           console.log(error)
@@ -62,6 +62,26 @@ const App = () => {
     }
 
   }, [refetch])
+
+
+  const setRandomCat = () => {
+    // console.log('RANDOM')
+    console.log(currentCat)
+
+    let randomCatIndex = Math.floor(Math.random() * (listOfCats.length - 1) + 1);
+
+    // ? Prevent back to back random cat
+    while (currentCat.catId === listOfCats[randomCatIndex].catId) {
+
+      console.log(`WHOA! Same cat ID, we'll roll again!`)
+      randomCatIndex = Math.floor(Math.random() * (listOfCats.length - 1) + 1);
+
+    }
+
+    // Should be triggering rerender making useEffect trigger right?
+    setCurrentCat(listOfCats[randomCatIndex])
+
+  }
 
   const loveCat = async () => {
 
@@ -135,25 +155,6 @@ const App = () => {
 
   }
 
-  const setRandomCat = () => {
-
-    console.log(currentCat)
-
-    let randomCatIndex = Math.floor(Math.random() * (listOfCats.length - 1) + 1);
-
-    // ? Prevent back to back random cat
-    while (currentCat.catId === listOfCats[randomCatIndex].catId) {
-
-      console.log(`WHOA! Same cat ID, we'll roll again!`)
-      randomCatIndex = Math.floor(Math.random() * (listOfCats.length - 1) + 1);
-
-    }
-
-    // Should be triggering rerender making useEffect trigger right?
-    setCurrentCat(listOfCats[randomCatIndex])
-
-  }
-
   return (
     <div className="App">
 
@@ -171,7 +172,7 @@ const App = () => {
 
       <CatGallery
         lovedCats={lovedCats}
-
+        dislikeCat={dislikeCat}
       />
 
     </div>

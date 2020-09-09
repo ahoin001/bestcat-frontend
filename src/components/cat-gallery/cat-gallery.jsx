@@ -1,8 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
+
+import CatPicture from '../cat.picture/catPicture'
 
 import './cat-gallery.css'
 
-const CatGallery = ({ lovedCats }) => {
+const CatGallery = ({ lovedCats, dislikeCat }) => {
 
     return (
 
@@ -18,12 +20,9 @@ const CatGallery = ({ lovedCats }) => {
 
                 {lovedCats.map(cat => {
 
-                    return <img src={cat.catImageUrl} className="fav-cat" alt="Loved-Cat-Pic" key={cat.id} />
+                    return <CatPicture key={cat.id} cat={cat} dislikeCat={dislikeCat} />
 
                 })}
-
-                {/* <img src="https://cdn2.thecatapi.com/images/94n.jpg" className="fav-cat" alt="Loved-Cat-Pic" />
-                <img src="https://cdn2.thecatapi.com/images/bat.jpg" className="fav-cat" alt="Loved-Cat-Pic" /> */}
 
             </ul>
 
