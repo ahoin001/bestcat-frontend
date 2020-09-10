@@ -4,7 +4,7 @@ import CatPicture from '../cat.picture/catPicture'
 
 import './cat-gallery.css'
 
-const CatGallery = ({ lovedCats, dislikeCat }) => {
+const CatGallery = ({ lovedCats, setRefetch }) => {
 
     return (
 
@@ -20,7 +20,7 @@ const CatGallery = ({ lovedCats, dislikeCat }) => {
 
                 {lovedCats.map(cat => {
 
-                    return <CatPicture key={cat.id} cat={cat} dislikeCat={dislikeCat} />
+                    return <CatPicture key={cat.id} cat={cat} setRefetch={setRefetch} />
 
                 })}
 

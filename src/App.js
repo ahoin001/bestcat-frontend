@@ -173,6 +173,7 @@ const App = () => {
       <CatGallery
         lovedCats={lovedCats}
         dislikeCat={dislikeCat}
+        setRefetch={setRefetch}
       />
 
     </div>
