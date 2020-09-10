@@ -145,7 +145,7 @@ const App = () => {
         })
 
       responseAfterUpdatingCat = await responseAfterUpdatingCat.json()
-      console.log(responseAfterUpdatingCat)
+      console.log('@@@@@',responseAfterUpdatingCat)
 
     } catch (error) {
       console.log(error)
