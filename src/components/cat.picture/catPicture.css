@@ -1,0 +1,62 @@
+.cat-pic-containter {
+  position: relative;
+  display: inline-block;
+
+  width: 600px;
+
+}
+
+.fav-cat {
+  object-fit: cover;
+  width: 500px;
+  height: 500px;
+}
+
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+
+  /* ? To center absolute elements */
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  transform-origin: center;
+
+  background-color: #f1f1f1;
+
+  min-width: 160px;
+
+  z-index: 1;
+}
+
+.cat-pic-containter:hover .dropdown-content {
+  display: inline-block;
+
+  /* Animation */
+  animation-duration: .5s;
+
+}
+
+@keyframes growAnimation {
+  0% {
+    transform: translate(-50%, -50%) scale(.6);
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1.3);
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+.grow-animation {
+  -webkit-animation-name: growAnimation;
+  animation-name: growAnimation;
+}
+
+.cat-pic-containter:hover .fav-cat {
+  opacity: 0.9;
+  filter: brightness(30%);
+}
+
