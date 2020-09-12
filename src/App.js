@@ -4,6 +4,8 @@ import { Navbar } from './components/navigation/navbar.jsx'
 import CatBooth from './components/cat-booth/cat-booth'
 import CatGallery from './components/cat-gallery/cat-gallery'
 
+
+
 const App = () => {
 
   const [listOfCats, setlistOfCats] = useState('')
@@ -23,7 +25,7 @@ const App = () => {
         try {
 
           const response = await fetch(
-            "https://afternoon-oasis-64306.herokuapp.com/cats",
+            process.env.REACT_APP_BACKEND_URL,
             {
               method: "GET",
               headers: {
@@ -58,6 +60,8 @@ const App = () => {
       }
 
       getAllCatsFromApi()
+
+      console.log(process.env.REACT_APP_BACKEND_URL)
 
     }
 
@@ -97,8 +101,7 @@ const App = () => {
 
       let responseAfterUpdatingCat = await fetch(
 
-
-        "https://afternoon-oasis-64306.herokuapp.com/cats",
+        process.env.REACT_APP_BACKEND_URL,
         {
           method: "PATCH",
           body: requestBodyLovedCat,
@@ -134,7 +137,7 @@ const App = () => {
 
       let responseAfterUpdatingCat = await fetch(
 
-        "https://afternoon-oasis-64306.herokuapp.com/cats",
+        process.env.REACT_APP_BACKEND_URL,
         {
           method: "PATCH",
           body: requestBodyDislikedCat,
@@ -145,7 +148,7 @@ const App = () => {
         })
 
       responseAfterUpdatingCat = await responseAfterUpdatingCat.json()
-      console.log('@@@@@',responseAfterUpdatingCat)
+      console.log('@@@@@', responseAfterUpdatingCat)
 
     } catch (error) {
       console.log(error)

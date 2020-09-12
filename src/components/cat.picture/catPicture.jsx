@@ -20,7 +20,7 @@ const CatPicture = ({ cat, setRefetch }) => {
 
             let responseAfterUpdatingCat = await fetch(
 
-                "https://afternoon-oasis-64306.herokuapp.com/cats",
+                process.env.REACT_APP_BACKEND_URL,
                 {
                     method: "PATCH",
                     body: requestBodyDislikedCat,
