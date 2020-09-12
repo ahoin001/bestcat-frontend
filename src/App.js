@@ -36,7 +36,7 @@ const App = () => {
           const apiResponseObjectWithArrayOfCats = await response.json()
 
           console.log('Response from cat list API Route: ', apiResponseObjectWithArrayOfCats.cats)
-
+          
           const catList = apiResponseObjectWithArrayOfCats.cats;
 
           let randomCatIndex = Math.floor(Math.random() * (catList.length - 1) + 1);
